@@ -1,5 +1,7 @@
 # aider-b2-backup
 
+**Encrypted, incremental, off-site backups for your AI coding agent — powered by [Backblaze B2 cloud storage](https://blze.ai/storage).**
+
 Incremental, **encrypted** backup of your [Aider](https://aider.chat) per-project chat history and config to [Backblaze B2](https://www.backblaze.com/cloud-storage).
 
 Built on [`@backblaze-labs/agent-backup-core`](https://github.com/backblaze-labs/agent-backup-core).
@@ -40,6 +42,11 @@ aider-b2-backup --help     # usage
 ## Security
 
 Set `B2_ENCRYPTION_KEY` (separate from your B2 credentials) so the mirror is encrypted at rest. If your `.aider.conf.yml` contains API keys, note it is included (encrypted); keep keys in `.env` (excluded) if you'd rather they never leave the machine.
+
+## Learn more
+
+- [Backblaze B2 Cloud Storage](https://blze.ai/storage) — affordable, S3-compatible object storage
+- [agent-backup-core](https://github.com/backblaze-labs/agent-backup-core) — the shared backup engine powering this tool
 
 ## License
 
