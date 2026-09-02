@@ -40,7 +40,7 @@ function trimTrailingSeparators(value: string): string {
 }
 
 function toSafeLabel(value: string): string {
-  let label = "";
+  const label: string[] = [];
   let lastWasHyphen = false;
 
   for (const char of value) {
@@ -48,15 +48,15 @@ function toSafeLabel(value: string): string {
       (char >= "A" && char <= "Z") || (char >= "a" && char <= "z") || (char >= "0" && char <= "9");
 
     if (isSafe) {
-      label += char;
+      label.push(char);
       lastWasHyphen = false;
     } else if (!lastWasHyphen) {
-      label += "-";
+      label.push("-");
       lastWasHyphen = true;
     }
   }
 
-  return label;
+  return label.join("");
 }
 
 function trimHyphens(value: string): string {
