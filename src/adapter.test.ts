@@ -19,6 +19,13 @@ describe("aiderCandidateRoots", () => {
     expect(roots.map((r) => r.label)).toEqual(["app", "app-2"]);
     expect(roots.map((r) => r.dir)).toEqual(["/work/app", "/personal/app"]);
   });
+
+  it("normalizes labels without regex-based trimming", () => {
+    const roots = aiderCandidateRoots({
+      AIDER_PROJECTS: "/work/app///,/work/--my app!!--,/work/---",
+    } as NodeJS.ProcessEnv);
+    expect(roots.map((r) => r.label)).toEqual(["app", "my-app", "project"]);
+  });
 });
 
 describe("aiderAdapter.resolveRoots", () => {
