@@ -26,8 +26,52 @@ export function aiderProjectDirs(env: NodeJS.ProcessEnv): string[] {
 
 /** Filesystem/regex-safe label from a project dir's basename. */
 function labelFor(dir: string): string {
-  const base = path.basename(dir.replace(/[/\\]+$/, "")) || "project";
-  return base.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "project";
+  const trimmedDir = trimTrailingSeparators(dir);
+  const base = path.basename(trimmedDir) || "project";
+  return trimHyphens(toSafeLabel(base)) || "project";
+}
+
+function trimTrailingSeparators(value: string): string {
+  let end = value.length;
+  while (end > 0 && (value[end - 1] === "/" || value[end - 1] === "\\")) {
+    end -= 1;
+  }
+  return value.slice(0, end);
+}
+
+function toSafeLabel(value: string): string {
+  const label: string[] = [];
+  let lastWasHyphen = false;
+
+  for (const char of value) {
+    const isSafe =
+      (char >= "A" && char <= "Z") || (char >= "a" && char <= "z") || (char >= "0" && char <= "9");
+
+    if (isSafe) {
+      label.push(char);
+      lastWasHyphen = false;
+    } else if (!lastWasHyphen) {
+      label.push("-");
+      lastWasHyphen = true;
+    }
+  }
+
+  return label.join("");
+}
+
+function trimHyphens(value: string): string {
+  let start = 0;
+  let end = value.length;
+
+  while (start < end && value[start] === "-") {
+    start += 1;
+  }
+
+  while (end > start && value[end - 1] === "-") {
+    end -= 1;
+  }
+
+  return value.slice(start, end);
 }
 
 export function aiderCandidateRoots(env: NodeJS.ProcessEnv): BackupRoot[] {
